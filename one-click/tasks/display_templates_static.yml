@@ -21,6 +21,14 @@
   debug:
     msg: "{{ file_content.stdout_lines }}"
   when: vcenter_name == 'eclvc1.ec.goodyear.com'
+- command: cat ../files//eclvms109.ec.goodyear.com_templates.txt
+  delegate_to: localhost
+  register: file_content
+  when: vcenter_name == 'eclvms109.ec.goodyear.com'
+- name: Debug output line by line
+  debug:
+    msg: "{{ file_content.stdout_lines }}"
+  when: vcenter_name == 'eclvms109.ec.goodyear.com'
 - command: cat /etc/ansible/roles/one-click/tasks/akrvcenterna1.na.ad.goodyear.com_templates.txt
 #- command: cat /etc/ansible/roles/one-click/tasks/akrvcenterna1.na.ad.goodyear.com_templates.yml
   register: file_content

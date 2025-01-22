@@ -3,8 +3,8 @@
   become: yes
   gather_facts: yes
   hosts: localhost
-#  vars:
- #   ansible_python_interpreter: /usr/bin/python3
+  vars: 
+    ansible_python_interpreter: /usr/bin/python3
   vars_files:
       - /etc/ansible/roles/one-click/vars/cred.yml
 #      - /etc/ansible/roles/one-click/vars/common_variables.yml
@@ -57,7 +57,8 @@
         name: one-click
     - include_role:
 #        name: post-processing-rhel
-        name: backup_Protection_rhel-8-post-processing
+#      name: backup_Protection_rhel-8-post-processing
+        name: rhel9-hardening
         apply:
           delegate_to: "{{ vm_name }}"
 #      vars:
