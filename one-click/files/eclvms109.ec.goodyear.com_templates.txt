@@ -1,0 +1,14 @@
+- AKRLNSPOMIGNA-template
+- Corp 7.9 Production
+- Global Windows Server Template
+- MFG-RHS-Template4
+- template-rhel7
+- template-rhel8
+- template-rhel9
+- template-slesforsap12sp5
+- template-slesforsap15sp4
+- template-slesforsap15sp5
+- template-slesforsap15sp6
+- template_sles12sp1_HANA1sp12_64G
+- template_sles15sp3_HANA2sps5_64Gb
+- w2k12-r2-std-uni-20170607
