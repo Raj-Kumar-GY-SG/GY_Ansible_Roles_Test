@@ -1,0 +1,14 @@
+template: MFG-RHEL8_ORA19c
+template: MFG-RHS-Template4
+template: template-rhel8-global-2q22
+template: template-rhel8
+template: template-rhel8-global
+template: template-slesforsap15sp3
+template: rtem-template
+template: w2k16-svr-std-uni-20170909
+template: RHEL6.7 Template-Base
+template: MFG-RHEL8_ORA19c-002
+template: MFG-RHEL8-ORA19 base image
+template: Windows_2012R2_Template
+template: Win2012R2_Template
+template: SCR_template-rhel8

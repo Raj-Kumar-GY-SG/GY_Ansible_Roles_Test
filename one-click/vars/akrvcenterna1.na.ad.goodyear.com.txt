@@ -1,0 +1,45 @@
+<generator object do_map at 0x7fe0923d3938>
+template: akrtcd3allna1_Template_ITIA2020-4516_Do_Not_Delete
+template: akrtcpawrs2_Template_ITIA2020-2226
+template: akrlnspomigna-temp
+template: akrtcd2all_Template_17Mar2023_SCTASK0376424
+template: akrtcd3allna1_Template_RITM0412755_Do_not_delete
+template: akrtcd3allna1_Template_ITIA2020-5040_Do_Not_Delete
+template: akrtcd2all_Template_01Nov2021
+template: Template_Windows_10
+template: akrunitenax
+template: Template_Win2012_Std_R2
+template: template_Win2008_Ent_R2
+template: akrtcd2all_Template_ITIA_2020-2226
+template: SLES SAP 12 SP3
+template: template-slesforsap15sp5_OLD
+template: SP4 - SAP App Server for SAP
+template: template-slesforsap15sp3
+template: SP3 - SAP Sybase Server - for SAP
+template: SLES SAP 12 SP2 Base
+template: SP4 - SAP Sybase Server for SAP V2
+template: template-slesforsap15sp5
+template: template-slesforsap15sp2
+template: template-slesforsap15sp1
+template: template-slesforsap15sp4
+template: SP3 - SAP App Server for SAP
+template: suse9
+template: suse10 template
+template: Corp 7.5 Production
+template: template-rhel8-4q2023
+template: Corp 7.9 Production
+template: Corp Template 7.3 Beta
+template: Template-RStudio-2019-0612
+template: GRSWEB_RedHat6.4_v1
+template: SuSE 11 sp1 Template
+template: Corp 7.3 Production
+template: template-rhel8-global-2q22
+template: CAM-v3.7-2-hw7-ext4
+template: CAM-v3.8-4-hw7-ext4
+template: CT-rhel8-template
+template: SUSE 10 sp3 Template
+template: GT_RHEL8_TEMPLATE_C
+template: template-rhel8- 062022
+template: CT-RHEL8-Template-3
+template: Template_Win2016_Global-tcs
+template: MFG-RHEL8_ORA19c

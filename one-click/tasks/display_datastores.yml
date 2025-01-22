@@ -1,0 +1,19 @@
+---
+- name: list datastores
+  vmware_datastore_info:
+    datacenter: "{{ user_input.user_input }}"
+#    datacenter: "SCR_Datacenter"
+#    datacenter: "AKR_Datacenter"
+    hostname: "{{ vcenter_name }}"
+    username: "{{ user_name }}"
+    password: "{{ pass_word }}"
+    validate_certs: false
+  register: ds_info
+- debug:
+    msg: "{{ ds_info.datastores | json_query('[].{name: name, type: type, free_space: freeSpace, Total_Capacity: capacity}') }}"
+- pause:
+   prompt: choose Datastore from above
+   echo: yes
+  register: ds_select
+- debug:
+   msg: You have choosen Datastore as {{ ds_select.user_input }}

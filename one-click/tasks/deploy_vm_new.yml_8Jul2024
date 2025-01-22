@@ -1,0 +1,80 @@
+---
+- pause:
+    prompt: Enter the portgroup ID/VLAN-name/ID as listed above
+  register: vlid
+- pause:
+    prompt: Enter amount of memory needed in MB example for 2GB, enter 2048, for 4 GB enter 4096
+  register: mem
+- pause:
+    prompt: Enter number of vcpu's needed
+  register: vcpu
+- pause:
+    prompt: Enter IP address for the server
+  register: ip_address
+- pause:
+    prompt: Enter Netmask for the server
+  register: nm
+- pause:
+    prompt: Enter Gateway for the server
+  register: gw
+- pause:
+    prompt: Enter DNS for the server
+  register: dn
+- debug:
+    var: vcenter_name
+- debug: 
+    var: vm_name
+#- name: Display all vars
+#  pause:
+##   prompt: "You have choosen VM {{ vm_name }} to deploy in vcenter {{ vcenter_name }} on datacenter  on datastore  {{ ds_select.user_input }} with configuration as {{ mem.user_input }} MB memory, {{ vcpu.user_input }} CPU, network VLAN {{ vlid.user_input }}, IP Address {{ ip_address.user_input }} and Host Function as {{ system_purpose }} from template - {{ temp.user_input }}, if it's all good, Press ENTER to continue with the server deployment or Ctrl-C plus A to abort"
+- name: Deploy Virtual server
+  vmware_guest:
+     hostname: "{{ vcenter_name }}"
+     username: "{{ user_name }}"
+     password: "{{ pass_word }}"
+     validate_certs: no
+     datacenter: "SCR_Datacenter"
+     datastore: "{{ ds_select.user_input }}"
+     name: "{{ vm_name }}"
+     hardware:
+       memory_mb: "{{ mem.user_input }}"
+     state: poweredon
+     folder: "{{ user_input.user_input }}/vm"
+     template: "{{ temp.user_input }}"
+     networks:
+        - name: "{{ vlid.user_input }}"
+          ip: "{{ ip_address.user_input }}"
+          netmask: "{{ nm.user_input }}"
+          gateway: "{{ gw.user_input }}"
+     wait_for_ip_address: true
+     customization:
+         dns_servers: "{{ dn.user_input }}"
+     annotation: "{{ system_purpose }}"
+  delegate_to: localhost
+
+- name: Add extra disk
+  pause:
+     prompt: Is there need to add extra disk? Enter yes or no
+     echo: yes
+  register: disk_y
+- pause:
+     prompt: Enter the size in GB for extra disk, example for 10GB enter 10, for 500GB enter 500
+  register: ex_disk
+  when: disk_y.user_input == 'yes'
+
+- vmware_guest_disk:
+     hostname: "{{ vcenter_name }}"
+     username: "{{ user_name }}"
+     password: "{{ pass_word }}"
+     validate_certs: no
+     datacenter: "{{ user_input.user_input }}"
+     name: "{{ vm_name }}"
+     disk:
+       - size_gb: "{{ ex_disk.user_input }}"
+         datastore: "{{ ds_select.user_input }}"
+         state: present
+         scsi_controller: 0
+         unit_number: 1
+  when: disk_y.user_input == 'yes'
+  delegate_to: localhost
+

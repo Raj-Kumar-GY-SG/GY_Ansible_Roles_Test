@@ -1,0 +1,10 @@
+---
+# tasks file for one-click
+#- import_tasks: user_inputs.yml
+- import_tasks: display_datacenters.yml
+#- import_tasks: display_templates.yml
+- import_tasks: display_templates_static.yml
+- import_tasks: display_datastores.yml
+- import_tasks: display_portgroup_vlan.yml
+- import_tasks: deploy_vm_new.yml
+#- import_tasks: deploy_vm_1.yml

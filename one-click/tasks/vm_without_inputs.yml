@@ -1,0 +1,157 @@
+- name: Deploy VM based on initials
+  hosts: localhost
+  become: yes
+  vars_files:
+    - /etc/ansible/roles/one-click/vars/vm_vars.yml
+    - /etc/ansible/roles/one-click/vars/cred.yml
+
+  vars_prompt:
+    - name: vm_name
+      prompt: Enter name for new server
+      private: false
+
+    - name: system_purpose
+      prompt: Enter purpose/Function of this server
+      private: false
+
+  tasks:
+    - pause:
+        prompt: Enter amount of memory needed in MB example for 2GB, enter 2048, for 4 GB enter 4096
+      register: mem
+    - pause:
+        prompt: Enter IP address for the server
+      register: ip_address
+    - pause:
+        prompt: Enter Netmask for the server
+      register: nm
+    - pause:
+        prompt: Enter Gateway for the server
+      register: gw
+    - name: Extract initials from VM name (3 or 4 characters)
+      set_fact:
+        initials_1: "{{ vm_name[:3] | lower | string | trim }}"
+        initials_2: "{{ vm_name[:4] | lower | string | trim }}"
+#    - name: Debug extracted initials
+#      debug:
+#        msg: "Extracted initials_1: '{{ initials_1 }}', initials_2: '{{ initials_2 }}'"
+    - name: Determine the initials to use
+      set_fact:
+        used_initials: >-
+          {% set initial_2_trimmed = (initials_2 | trim).strip() %}
+          {% set initial_1_trimmed = (initials_1 | trim).strip() %}
+          {% if initial_2_trimmed in vars_mapping.keys() %}
+            {{ initial_2_trimmed | trim }}
+          {% elif initial_1_trimmed in vars_mapping.keys() %}
+            {{ initial_1_trimmed | trim }}
+          {% else %}
+            None
+          {% endif %}
+
+ #   - name: Debug the selected initials
+ #     debug:
+ #       msg: "Used initials: '{{ used_initials | trim }}'"
+    - name: Used initials for playbook
+      set_fact:
+        initials_used: "{{ used_initials | trim }}"
+    - name: Get datacenter and datastore based on initials
+      set_fact:
+        selected_datacenter: "{{ vars_mapping[initials_used].datacenter }}"
+        selected_datastore: "{{ vars_mapping[initials_used].datastore }}"
+        selected_hostname: "{{ vars_mapping[initials_used].hostname }}"
+        selected_network: "{{ vars_mapping[initials_used].networks }}"
+        selected_dns: "{{ vars_mapping[initials_used].dns }}"
+        selected_dns1: "{{ vars_mapping[initials_used].dns1 }}"
+        selected_dnssuffix: "{{ vars_mapping[initials_used].dnssuffix }}"
+        selected_cluster: "{{ vars_mapping[initials_used].cluster }}"
+        
+    #  when: initials in vars_mapping
+
+    - name: Debug selected datacenter and datastore
+      debug:
+        msg: "You have defined variables as Selected Datacenter: {{ selected_datacenter }}, Cluster: {{ selected_cluster }}, Selected Datastore: {{ selected_datastore }}, Selected vcenter: {{ selected_hostname }}, Selected Network: {{ selected_network }}, DNS1: {{ selected_dns }}, with configuration as {{ mem.user_input }} - MB memory, 4- vCPU, network VLAN: {{ selected_network }}, IP Address: {{ ip_address.user_input }} and Host Function as {{ system_purpose }} from template - {{ initials_used }}-template-rhel8, if it's all good, Press ENTER to continue with the server deployment or Ctrl-C plus A to abort"
+    - pause:
+       prompt: "Press Enter to Continue with the server deployment or Ctrl-C plus A to abort"
+
+    - name: Deploy the VM
+      community.vmware.vmware_guest:
+        hostname: "{{ selected_hostname }}"
+        username: "{{ user_name }}"
+        password: "{{ pass_word }}"
+        validate_certs: no
+        datacenter: "{{ selected_datacenter }}"
+        cluster: "{{ selected_cluster }}"
+        datastore: "{{ selected_datastore }}"
+        template: '{{ initials_used }}-template-rhel8'
+        folder: "/{{ selected_datacenter }}/vm"
+        name: "{{ vm_name }}"
+        state: poweredon
+        hardware:
+          memory_mb: "{{ mem.user_input }}"
+          num_cpus: 4
+        networks:
+          - name: "{{ selected_network }}"
+            ip: "{{ ip_address.user_input }}"
+            netmask: "{{ nm.user_input }}"
+            gateway: "{{ gw.user_input }}"
+        wait_for_ip_address: yes
+        customization:
+            dns_servers: "{{ selected_dns }}, {{ selected_dns1 }}"
+            dns_suffix: "goodyear.com, {{ selected_dnssuffix }}"
+        annotation: "{{ system_purpose }}"
+      delegate_to: localhost
+
+    - name: Add extra disk
+      pause:
+         prompt: Is there need to add extra disk? Enter yes or no
+         echo: yes
+      register: disk_y
+    - pause:
+         prompt: Enter the size in GB for extra disk, example for 10GB enter 10, for 500GB enter 500
+      register: ex_disk
+      when: disk_y.user_input == 'yes'
+
+    - vmware_guest_disk:
+         hostname: "{{ selected_hostname }}"
+         username: "{{ user_name }}"
+         password: "{{ pass_word }}"
+         validate_certs: no
+         datacenter: "{{ selected_datacenter }}"
+         name: "{{ vm_name }}"
+         disk:
+           - size_gb: "{{ ex_disk.user_input }}"
+             datastore: "{{ selected_datastore }}"
+             state: present
+             scsi_controller: 0
+             unit_number: 1
+      when: disk_y.user_input == 'yes'
+      delegate_to: localhost
+
+    - name: Choose vcenter_name, needed to register server to satellite
+      pause:
+        prompt: |
+           Choose the vcenter-name where you need to deploy the VM, available options are
+           - sgcvc1.ap.goodyear.com
+           - sgcgpvc1.ap.goodyear.com
+           - cnpnvc01.ap.goodyear.com
+           - akrvcenterna1.na.ad.goodyear.com
+           - akroevc1.na.goodyear.com
+           - akrosvc1.na.goodyear.com
+           - akrojvc1.na.goodyear.com
+           - bravcenter01.la.ad.goodyear.com
+           - bravcenter02.la.ad.goodyear.com
+           - eclvc1.ec.goodyear.com
+           - eclvms109.ec.goodyear.com
+           - eclosvc1.ec.goodyear.com
+        echo: yes
+      register: vcenter_name
+    - set_fact:
+        vcenter_name: "{{ vcenter_name.user_input }}"
+    - debug: 
+        msg: "{{ vcenter_name }}"
+
+
+    - include_role:
+#        name: post-processing-rhel
+        name: backup_Protection_rhel-8-post-processing
+        apply:
+          delegate_to: "{{ vm_name }}"

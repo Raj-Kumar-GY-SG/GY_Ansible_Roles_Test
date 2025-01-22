@@ -1,0 +1,4 @@
+dns_servers_1:
+ - 10.120.13.109
+ - 10.127.253.95
+when: vcenter_name == 'sgcvc1.ap.goodyear.com' or vcenter_name == 'sgcgpvc1.ap.goodyear.com' or vcenter_name == 'cnpnvc01.ap.goodyear.com'

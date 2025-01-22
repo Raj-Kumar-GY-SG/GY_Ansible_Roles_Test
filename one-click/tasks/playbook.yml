@@ -1,0 +1,74 @@
+---
+- name: Deploying VM
+  become: yes
+  gather_facts: yes
+  hosts: localhost
+#  vars:
+ #   ansible_python_interpreter: /usr/bin/python3
+  vars_files:
+      - /etc/ansible/roles/one-click/vars/cred.yml
+#      - /etc/ansible/roles/one-click/vars/common_variables.yml
+#      - /etc/ansible/roles/one-click/vars/common_variables_1.yml
+  vars_prompt:
+   - name: vcenter_name
+     prompt: |
+       Choose the vcenter-name where you need to deploy the VM, available options are
+       - sgcvc1.ap.goodyear.com
+       - sgcgpvc1.ap.goodyear.com
+       - cnpnvc01.ap.goodyear.com
+       - akrvcenterna1.na.ad.goodyear.com
+       - akroevc1.na.goodyear.com
+       - akrosvc1.na.goodyear.com
+       - akrojvc1.na.goodyear.com
+       - bravcenter01.la.ad.goodyear.com
+       - bravcenter02.la.ad.goodyear.com
+       - eclvc1.ec.goodyear.com
+       - eclvms109.ec.goodyear.com
+       - eclosvc1.ec.goodyear.com
+     private: false
+   - name: vm_name_1
+     prompt: Enter name for new server
+     private: false
+  
+   - name: system_purpose_1
+     prompt: Enter purpose/Function of this server
+     private: false
+     
+#   - name: user_name
+#     prompt: Enter username to connect to vcenter
+#     private: false
+ #  - name: pass_word
+ #    prompt: "Enter user password to connect to vcenter"
+ #    private: true
+
+#  roles:
+#    - one-click
+
+  tasks:
+    - set_fact: vm_name="{{ vm_name_1 }}"
+    - debug:
+        var: vm_name
+    - set_fact: system_purpose="{{ system_purpose_1 }}"
+    - debug:
+        var: system_purpose
+    - shell: 
+        cmd: echo {{ vm_name }} >> /etc/ansible/hosts
+    - include_role:
+        name: one-click
+    - include_role:
+#        name: post-processing-rhel
+        name: backup_Protection_rhel-8-post-processing
+        apply:
+          delegate_to: "{{ vm_name }}"
+#      vars:
+#        hosts: "{{ vm_name }}"
+  
+##  roles:
+##    - one-click
+#- name: post-processing
+#  become: yes 
+#  hosts: "{{ host_name }}"
+#  vars:
+#    host_name: "{{ vm_name_1 }}"
+ # roles:
+  #  - post-processing-rhel

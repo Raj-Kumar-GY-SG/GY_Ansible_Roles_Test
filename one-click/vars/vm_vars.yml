@@ -1,0 +1,227 @@
+vars_mapping:
+  sgc:
+    datacenter: "SGC_Datacenter"
+    datastore: "SGC_vsanDatastore"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "SGC_VLAN52"
+  cnp:
+    datacenter: "CNP_Datacenter"
+    datastore: "3PARSSD_Fully_07"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks:
+  idc:
+    datacenter: "IDC_Datacenter"
+    datastore: "ctrl2_ds01"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "IDC_MainOffice_VLAN50"
+  inb:
+    datacenter: "INP_Datacenter"
+    datastore: "DGA01_V0001"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "Server Farm"
+  ins:   
+    datacenter: "INS_Datacenter"
+    datastore: "INS_DatastoreCluster"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "INS_MFG_Server_VLAN50"
+  jpt:
+    datacenter: "JPT_Datacenter (planned)"
+    datastore: "SGC_vsanDatastore"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks:
+  myk:
+    datacenter: "MYK_Datacenter"
+    datastore: "MYK_vsanDatastore"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "Production Srvr"
+  cns:
+    datacenter: "Shanghai"
+    datastore: "MSA_2052_A"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "Corp Server"
+  jpn:
+    datacenter: "Tatsuno"
+    datastore: "JPN_vsanDatastore"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "MFG_Srvr"
+  thp:
+    datacenter: "THP_Datacenter"
+    datastore: "THP_DS_3PAR_VMWARE01"
+    hostname: "sgcvc1.ap.goodyear.com"
+    networks: "thp_server_pfa_50"
+  akr:
+    datacenter: "AKR_Datacenter"
+    datastore: "AKR_Linux_AKR_DataStore"
+    hostname: "akrvcenterna1.na.ad.goodyear.com"
+    networks: "48 Subnet"
+  ecl:
+    datacenter: ""
+    datastore: ""
+  gedo:
+    datacenter: "GEDO_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "GEDO_ds_vsanDatastore"
+    networks: "GEDO_SERVER_CORP_VLAN52"
+  czc:
+    datacenter: "CZC_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "CZC_ds_vsanDatastore"
+    networks: "CZC_SERVER_PFA_VLAN50"
+  frp:
+    datacenter: "FRP_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "FRP_ds_vsanDatastore"
+    networks: "FRP_VMnetwork_VLAN50"
+  frd:
+    datacenter: "FRD_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "FRD_ds_frdgpesx01_02"
+    networks: "VM Network"
+  lum:
+    datacenter: "LUM_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "LUM_ds_lmvm03_SSD_LOCAL"
+    networks: "LUM_SERVER_PFA_VLAN50"
+  gefw:
+    datacenter: "GEFW_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "GEFW_DS_PURE-VMWARE11"
+    networks: "GEFW_SERVER_PFA_VLAN50"
+  tri:
+    datacenter: "TRI_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "TRI_ds_vsanDatastore"
+    networks: "VM Network 90"
+  frt:
+    datacenter: "FRT_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "FRT_DS_FRTGPESX01_01"
+    networks: "51_server_pfa"
+  gewi:
+    datacenter: "GEWI_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "GEWI_DS_3PAR8200-VMWARE07"
+    networks: "GEWI_SERVER_PFA_VLAN50"
+  gefd:
+    datacenter: "GEFD_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "GEFD_3PAR_VMWARE19"
+    networks: "GEFD_SERVER_PFA_VLAN50"
+  plw:
+    datacenter: "PLW_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "PLW_ds_vsanDatastore"
+    networks: "UserData"
+  aed:
+    datacenter: "AED_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "AED_ds_aedesx01_01"
+    networks: "VM Network"
+  sws:
+    datacenter: "SWS_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "SWS_ds_swsgpesx01_02_Data"
+    networks: "VM Network"
+  tra:
+    datacenter: "TRA_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "TRA_DS_TRAGPESX01_01"
+    networks: "50_server_pfa"
+  pld:
+    datacenter: "PLD_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "PLD_ds_3PAR8200_VMWARE05"
+    networks: "PLD_PRODUCTION_VLAN50"
+  atv:
+    datacenter: "ATV_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "ATV_ds_atvesx3_localdata"
+    networks: "VM Network - VID90"
+  plt:
+    datacenter: "PLT_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "PLT_ds_pltgpesx01_local_2_HPE"
+    networks: "OFFICE"
+  geco:
+    datacenter: "GECO_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "GECO_ds_gecogpesx01_02"
+    networks: "Datacenter"
+    dns: "163.243.163.239"
+  rob:
+    datacenter: "ROB_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "ROB_ds_robgpesx02_02"
+    networks: "ROB_VMNetwork_90"
+    dns: "163.243.163.239"
+  itm:
+    datacenter: "ITM_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "ITM_ds_vsanDatastore"
+    networks: "ITM_VMnetwork_VLAN90"
+    dns: "163.243.163.239"
+  gehu:
+    datacenter: "GEHU_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "GEHU_DS_3PAR8200-VMWARE05"
+    networks: "GEHU_VM_NET_VLAN8"
+    dns: "163.243.163.239"
+    dns1: "163.243.163.243"
+    dnssuffix: "ec.goodyear.com"
+    cluster: "GEHU_Clust_MIT"
+  slk:
+    datacenter: "SLK_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "SLK_ds_slkgpesx01_ds1"
+    networks: "VM Network_50"
+    dns: "163.243.163.239"
+# "EMEA_Witness"
+  gewe:
+    datacenter: "GEWE_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "gewe_ds_gewegpesx01_02"
+    networks: "VM Network"
+    dns: "163.243.163.239"
+  lut:
+    datacenter: "LUT_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: " LUT_3PAR_VMWARE28"
+    networks: "LUT_SERVER_PFA_VLAN50"
+    dns: "163.243.163.239"
+  beb:
+    datacenter: "BEB_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "BEB_ds_bebgpesx01_01"
+    networks: "BEB_SERVER_VLAN90"
+    dns: "163.243.163.239"
+  esm:
+    datacenter: "ESM_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "ESM_ds_esmesxi01_01"
+    networks: "ESM_SERVER_CORP_VLAN90"
+    dns: "163.243.163.239"
+  ukb:
+    datacenter: "UKB_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "UKB_ds_ukbgpesx01_02_Data"
+    networks: "VM Network"
+    dns: "163.243.163.239"
+  geri:
+    datacenter: "GERI_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "GERI_DS_3PAR8200-VMWARE04"
+    networks: "GERI_SERVER_PFA_VLAN50"
+    dns: "163.243.163.239"
+  frr:
+    datacenter: "FRR_Datacenter"
+    hostname: "eclvc1.ec.goodyear.com"
+    datastore: "FRR_ds_vsanDatastore"
+    networks: "FRR_PFA_VLAN50"
+    dns: "163.243.163.239"
+  abcd:
+    datacenter: "Datacenter_A2"
+    datastore: "Datastore_A2"
+    hostname: "Datastore_hostname"
+    networks: "network_abcd"
+    dns: "163.243.163.239"
+

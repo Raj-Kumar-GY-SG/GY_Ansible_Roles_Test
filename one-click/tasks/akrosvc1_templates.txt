@@ -1,0 +1,57 @@
+- rhel8-template-ATL
+- SCR_template-rhel8
+- MFG-RHEL8-ORA19 base image
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- RHEL6.7 Template-Base
+- rtem-template
+- template-rhel8-global
+- template-rhel8-global-2q22
+- template-slesforsap15sp3
+- w2k16-svr-std-uni-20170909
+- Win2012R2_Template
+- Windows_2012R2_Template
+- template-rhel8
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- template-rhel8-global-2q22
+- MFG-RHEL8_ORA19c
+- template-rhel8
+- template-rhel8-global
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- template-slesforsap15sp3
+- MFG-RHS-Template4
+- rtem-template
+- w2k16-svr-std-uni-20170909
+- RHEL6.7 Template-Base
+- MFG-RHEL8_ORA19c
+- MFG-RHEL8_ORA19c-002
+- MFG-RHEL8-ORA19 base image
+- Windows_2012R2_Template
+- template-rhel8-global
+- Win2012R2_Template
+- MFG-RHEL8_ORA19c
+- template-rhel8
+- MFG-RHS-Template4
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- template-rhel8-global-2q22
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- template-rhel8-global-2q22
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- template-rhel8-global-2q22
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c

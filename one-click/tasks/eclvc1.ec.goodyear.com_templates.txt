@@ -1,0 +1,55 @@
+- Global Windows Server Template
+- Global Windows Server Template
+- geris0053_old
+- Global Windows Server Template
+- Global Windows Server Template
+- lucotmvm50290
+- lucotmvm50329
+- lutvmw011
+- lucotmvm50298
+- lucotmvm50331
+- lucotmvm50330
+- lucotmvm50270
+- lucotmvm50328
+- lucotmvm50530
+- lutvmw006
+- lucotmvm50275
+- Global Windows Global Template
+- lutpc-bbsrv
+- lucotmvm51513
+- lucotmvm50914
+- lucotmvm50284
+- lucotmvm50299
+- lucotmvm50285
+- lucotmvm51512
+- lucotmvm50775
+- template-rhel8
+- lucotmvm50314
+- template-slesforsap12sp5
+- lucotmvm50294
+- lucotmvm50514
+- lucotmvm51511
+- Windows2019_net3.5_Template
+- lucotmvm50402
+- lucotmvm50327
+- Global Windows Server Template
+- Template_CvAD_Worker_PVS
+- Global Windows Server Template_DDCH
+- Global Windows Server Template
+- Template_RockyLinux91
+- Global Windows Server Template
+- Global Windows Server Template
+- Global Windows Server Template
+- Global Windows Server Template
+- MFG-RHEL8_ORA19c
+- Global Windows Server Template
+- Global Windows Server Template
+- Global Windows Server Template
+- Global Windows Server Template
+- Template_RockyLinux85
+- Global Windows Server Template
+- centOS7template
+- Template_RockyLinux91
+- Global Windows Server Template
+- Global Windows Server Template
+- Global Windows Server Template

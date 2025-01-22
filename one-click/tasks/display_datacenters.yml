@@ -1,0 +1,32 @@
+---
+- set_fact: vm_name="{{ vm_name_1 }}"
+  delegate_to: localhost
+- debug:
+    var: vm_name
+  delegate_to: localhost
+
+- name: Login to selected vcenter and list available data-centers
+  debug:
+   msg: "You have selected {{ vcenter_name }} to deploy your new VM and below mentioned are the available data-centers in {{ vcenter_name }}, please choose the Data-Center where you nee
+d to deploy new server"
+  delegate_to: localhost
+- community.vmware.vmware_datacenter_info:
+    hostname: "{{ vcenter_name }}"
+    username: "{{ user_name }}"
+    password: "{{ pass_word }}"
+    validate_certs: no
+  register: datacenters
+  delegate_to: localhost
+- debug:
+    msg: >
+     {{
+     datacenters.datacenter_info
+     | map(attribute='name')
+     | list
+     }}
+  delegate_to: localhost
+- pause:
+    prompt: "Choose Data-Center"
+    echo: yes
+  register: user_input
+  delegate_to: localhost

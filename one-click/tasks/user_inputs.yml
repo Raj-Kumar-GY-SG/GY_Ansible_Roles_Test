@@ -1,0 +1,17 @@
+---
+- name: Deploy VM with one-click user interactive
+  vars_prompt:
+    - name: vcenter_name
+      prompt: |
+        Choose the vcenter-name where you need to deploy the VM, available options are 
+        - sgcvc1.ap.goodyear.com 
+        - akrosvc1.na.goodyear.com 
+        - akrvcenterna1.na.ad.goodyear.com 
+        - eclvc1.ec.goodyear.com
+      private: no
+    - name: user_name
+      prompt: Enter username to connect to vcenter
+      private: no
+    - name: pass_word
+      prompt: "Enter user password to connect to vcenter"
+      private: true

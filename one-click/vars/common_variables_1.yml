@@ -1,0 +1,4 @@
+dns_servers_1:
+ - 163.243.37.112
+ - 163.243.37.113
+when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com' or vcenter_name == 'akrosvc1.na.goodyear.com'

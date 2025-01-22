@@ -1,0 +1,9 @@
+template: template-rhel8-global-2q22
+template: MFG-RHEL8_ORA19c
+template: MFG-RHS-Template4
+template: mykrpt1-20230420
+template: template-slesforsap15sp3
+template: template-rhel8-global
+template: Corp 7.9 Production
+template: CT-rhel8-template-2
+template: DH-ORA19c-v1

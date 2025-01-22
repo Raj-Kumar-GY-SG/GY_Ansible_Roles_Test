@@ -1,0 +1,24 @@
+---
+#- pause:
+#   prompt: Enter name for new server
+#   echo: yes
+#- pause:
+#   prompt: "Enter purpose/Function of this server"
+#   echo: yes
+#  register: system_purpose
+- name: list all available vlan IDs, distributed port groups
+  vmware_dvs_portgroup_info:
+     hostname: "{{ vcenter_name }}"
+     username: "{{ user_name }}"
+     password: "{{ pass_word }}"
+     validate_certs: false
+     datacenter: "{{ user_input.user_input }}"
+#     datacenter: "SCR_Datacenter"
+  register: pgrp
+- name: Extract portgroup_name
+  debug:
+   msg: "{{ pgrp.dvs_portgroup_info[item] | json_query('[].portgroup_name') }}"
+  loop: "{{ pgrp.dvs_portgroup_info.keys()| list }}"
+  loop_control:
+    loop_var: item
+

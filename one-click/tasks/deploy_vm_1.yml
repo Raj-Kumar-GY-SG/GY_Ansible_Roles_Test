@@ -1,0 +1,50 @@
+---
+- name: Deploy Virtual server
+  vmware_guest:
+     hostname: "{{ vcenter_name }}"
+     username: "{{ user_name }}"
+     password: "{{ pass_word }}"
+     validate_certs: no
+     datacenter: SGC_Datacenter
+     datastore: SGC_vsanDatastore
+     name: "{{ vm_name }}"
+     hardware:
+       memory_mb: 2048
+     state: poweredon
+     folder: SGC_Datacenter/vm
+     template: template-rhel8-global
+     networks:
+        - name: SGC_VLAN52
+          ip: 163.243.196.65
+          netmask: 255.255.252.0
+          gateway: 163.243.196.1
+     wait_for_ip_address: true
+     customization:
+         dns_servers: "{{ dns_servers_1 }}"
+     annotation: "{{ system_purpose }}"
+    # annotation: AP Internal SFTP Server
+
+- name: Add extra disk
+  pause:
+     prompt: Is there need to add extra disk? Enter yes or no
+     echo: yes
+  register: disk_y
+- pause:
+     prompt: Enter the size in GB for extra disk, example for 10GB enter 10, for 500GB enter 500
+  register: ex_disk
+  when: disk_y.user_input == 'yes'
+
+- vmware_guest_disk:
+     hostname: "{{ vcenter_name }}"
+     username: "{{ user_name }}"
+     password: "{{ pass_word }}"
+     validate_certs: no
+     datacenter: "{{ user_input.user_input }}"
+     name: "{{ vm_name }}"
+     disk:
+       - size_gb: "{{ ex_disk.user_input }}"
+         datastore: "{{ ds_select.user_input }}"
+         state: present
+         scsi_controller: 0
+         unit_number: 1
+  when: disk_y.user_input == 'yes'

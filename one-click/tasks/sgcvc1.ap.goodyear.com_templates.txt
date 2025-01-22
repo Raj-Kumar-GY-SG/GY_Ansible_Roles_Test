@@ -1,0 +1,18 @@
+- template-rhel8-global-2q22
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- MFG-RHS-Template4
+- mykrpt1-20230420
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- template-slesforsap15sp3
+- template-rhel8-global
+- Corp 7.9 Production
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- CT-rhel8-template-2
+- DH-ORA19c-v1
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- template-rhel8-global-2q22

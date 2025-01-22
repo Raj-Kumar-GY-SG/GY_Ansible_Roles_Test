@@ -1,0 +1,94 @@
+template: Global Windows Server Template_OS
+template: MFG-RHS-Template4
+template: MFG-RHEL8_ORA19c
+template: template-rhel8-global-2q22
+template: T_MES_RTE64_2019_2021
+template: MFG-RHS-Template3
+template: template-rhel8
+template: DH-ORA19c-v1
+template: Global Windows Server Template
+template: master_Elektronik_2022
+template: Windows 10_Temp_2022
+template: DH-ora19c
+template: template-slesforsap15sp4
+template: pldmsiconnect500GB
+template: Master_windows10
+template: template-slesforsap12sp3
+template: luta1-old
+template: lucotmvm50296
+template: lucotmvm50161
+template: MFG-RHS-Templat4
+
+#9-Jul-2024
+- Global Windows Server Template_OS
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- Global Windows Server Template_OS
+- template-rhel8-global-2q22
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- template-slesforsap15sp4
+- Global Windows Server Template_OS
+- template-rhel8-global-2q22
+- template-rhel8
+- MFG-RHS-Template3
+- MFG-RHEL8_ORA19c
+- T_MES_RTE64_2019_2021
+- MFG-RHS-Template4
+- Global Windows Server Template_OS
+- MFG-RHS-Template4
+- Global Windows Server Template_OS
+- template-rhel8-global-2q22
+- MFG-RHEL8_ORA19c
+- template-slesforsap15sp4
+- MFG-RHS-Template4
+- DH-ORA19c-v1
+- Global Windows Server Template
+- template-rhel8
+- MFG-RHS-Template3
+- MFG-RHEL8_ORA19c
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- template-rhel8-global-2q22
+- Global Windows Server Template_OS
+- template-rhel8-global-2q22
+- Global Windows Server Template_OS
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- master_Elektronik_2022
+- template-rhel8-global-2q22
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- Global Windows Server Template_OS
+- template-slesforsap15sp4
+- Windows 10_Temp_2022
+- DH-ora19c
+- template-rhel8-global-2q22
+- template-slesforsap15sp4
+- Global Windows Server Template_OS
+- MFG-RHS-Template4
+- MFG-RHEL8_ORA19c
+- pldmsiconnect500GB
+- MFG-RHS-Template4
+- Master_windows10
+- template-rhel8-global-2q22
+- Global Windows Server Template_OS
+- template-slesforsap12sp3
+- Global Windows Server Template
+- lucotmvm50161
+- lucotmvm50296
+- luta1-old
+- MFG-RHEL8_ORA19c
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- template-rhel8-global-2q22
+- Global Windows Server Template
+- MFG-RHS-Templat4
+- MFG-RHEL8_ORA19c
+- template-rhel8
+- Global Windows Server Template
+- MFG-RHEL8_ORA19c
+- MFG-RHS-Template4
+- template-rhel8-global-2q22
+- Global Windows Server Template

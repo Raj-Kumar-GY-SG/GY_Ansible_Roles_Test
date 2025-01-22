@@ -1,0 +1,37 @@
+---
+- name: Include file content
+  command: cat /etc/ansible/roles/one-click/tasks/akrosvc1_templates.txt
+  register: file_content
+  when: vcenter_name == 'akrosvc1.na.goodyear.com'
+- name: Debug output line by line
+  debug:
+    msg: "{{ file_content.stdout_lines }}"
+  when: vcenter_name == 'akrosvc1.na.goodyear.com'
+- command: cat /etc/ansible/roles/one-click/tasks/sgcvc1.ap.goodyear.com_templates.txt
+  register: file_content
+  when: vcenter_name == 'sgcvc1.ap.goodyear.com'
+- name: Debug output line by line
+  debug:
+    msg: "{{ file_content.stdout_lines }}"
+  when: vcenter_name == 'sgcvc1.ap.goodyear.com'
+- command: cat /etc/ansible/roles/one-click/tasks/eclvc1.ec.goodyear.com_templates.txt
+  register: file_content
+  when: vcenter_name == 'eclvc1.ec.goodyear.com'
+- name: Debug output line by line
+  debug:
+    msg: "{{ file_content.stdout_lines }}"
+  when: vcenter_name == 'eclvc1.ec.goodyear.com'
+- command: cat /etc/ansible/roles/one-click/tasks/akrvcenterna1.na.ad.goodyear.com_templates.txt
+#- command: cat /etc/ansible/roles/one-click/tasks/akrvcenterna1.na.ad.goodyear.com_templates.yml
+  register: file_content
+  when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com'
+- name: Debug output line by line
+  debug:
+    msg: "{{ file_content.stdout_lines }}"
+  when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com'
+- pause:
+    prompt: "Choose Template"
+    echo: yes
+  register: temp
+- debug:
+    msg: You have choosen template as {{ temp.user_input }}

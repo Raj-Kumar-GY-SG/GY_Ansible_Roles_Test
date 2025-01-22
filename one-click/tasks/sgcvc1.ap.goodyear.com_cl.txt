@@ -1,0 +1,5 @@
+- template-rhel7
+- template-rhel8
+- template-rhel9
+- template-slesforsap15sp4
+- template-slesforsap15sp5

@@ -1,0 +1,31 @@
+---
+- community.vmware.vmware_vm_info:
+    hostname: "{{ vcenter_name }}"
+    username: "{{ user_name }}"
+    password: "{{ pass_word }}"
+    show_attribute: true
+    vm_type: template
+    validate_certs: no
+  register: templates
+- debug:
+    msg: >
+     {{
+     templates.virtual_machines
+     | map(attribute='guest_name')
+     | list
+     }}
+- set_fact:
+    template_list: "{{ templates.virtual_machines  | map(attribute='guest_name') | list }}"
+- set_fact:
+    template_list_entries: "{{ template_list| map('regex_replace', '^', 'template: ') | list }}"
+- lineinfile:
+        path: /etc/ansible/roles/one-click/vars/{{ vcenter_name }}.txt
+        line: "{{ item }}"
+        create: yes
+  loop: "{{ template_list_entries }}"
+- pause:
+    prompt: "Choose Template"
+    echo: yes
+  register: temp
+- debug:
+    msg: You have choosen template as {{ temp.user_input }}
