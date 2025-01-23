@@ -1,0 +1,31 @@
+---
+#- set_fact: vm_name="{{ vm_name_1 }}"
+#  delegate_to: localhost
+#- debug:
+#    var: vm_name
+#  delegate_to: localhost
+
+- name: Login to selected vcenter and list available data-centers
+  debug:
+   msg: "You have selected {{ vcenter_name }} to deploy your new VM and below mentioned are the available clusters in !!!{{ user_input.user_input }}!!!, please choose the Cluster where you need to deploy new server"
+  delegate_to: localhost
+- community.vmware.vmware_cluster_info:
+    hostname: "{{ vcenter_name }}"
+    username: "{{ user_name }}"
+    password: "{{ pass_word }}"
+    validate_certs: no
+    datacenter: "{{ user_input.user_input }}"
+  register: cls_info
+  delegate_to: localhost
+- name: Collect all cluster names
+  set_fact:
+     clusters_list: "{{ cls_info.clusters.keys() | list }}"
+- name: Display all clusters in a single paragraph
+  debug:
+    msg: "{{ clusters_list }}"
+  delegate_to: localhost
+- pause:
+    prompt: "Choose Cluster from Above-list"
+    echo: yes
+  register: user_input_1
+  delegate_to: localhost

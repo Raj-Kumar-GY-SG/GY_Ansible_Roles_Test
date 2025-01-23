@@ -6,7 +6,7 @@
   vars: 
     ansible_python_interpreter: /usr/bin/python3
   vars_files:
-      - /etc/ansible/roles/one-click/vars/cred.yml
+      - /etc/ansible/roles/one-click_test/vars/cred.yml
 #      - /etc/ansible/roles/one-click/vars/common_variables.yml
 #      - /etc/ansible/roles/one-click/vars/common_variables_1.yml
   vars_prompt:

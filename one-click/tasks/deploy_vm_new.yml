@@ -34,6 +34,7 @@
      password: "{{ pass_word }}"
      validate_certs: no
      datacenter: "{{ user_input.user_input }}"
+     cluster: "{{ user_input_1.user_input }}"
      datastore: "{{ ds_select.user_input }}"
      name: "{{ vm_name }}"
      hardware:
@@ -69,6 +70,7 @@
      password: "{{ pass_word }}"
      validate_certs: no
      datacenter: "{{ user_input.user_input }}"
+     cluster: "{{ user_input_1.user_input }}"
      name: "{{ vm_name }}"
      disk:
        - size_gb: "{{ ex_disk.user_input }}"
