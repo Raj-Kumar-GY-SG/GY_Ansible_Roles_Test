@@ -1,0 +1,12 @@
+ldflexn         ALL=(root) NOPASSWD: \
+/opt/managesoft/bin/, \
+!/opt/managesoft/bin/../*, \
+/opt/managesoft/install/, \
+!/opt/managesoft/install/../*, \
+/usr/bin/vi /var/opt/managesoft/etc/config.ini, \
+/usr/bin/vi /opt/managesoft/etcp.trace, \
+/usr/bin/vi /opt/managesoft/install/default.ini, \
+/etc/init.d/mgsusageag restart, \
+/etc/init.d/ndtask restart, \
+/usr/bin/systemctl mgsusageag restart, \
+/usr/bin/systemctl ndtask restart

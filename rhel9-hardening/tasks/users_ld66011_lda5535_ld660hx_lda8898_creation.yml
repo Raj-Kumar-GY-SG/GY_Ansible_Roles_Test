@@ -1,0 +1,65 @@
+---
+- name: Create system application users (ld66011-remote administration, lda5535-GoVault, ld660hx-Qualys and lda8898-Ansible)
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    comment: "{{ item.comment }}"
+    group: "{{ item.group }}"
+    shell: "{{ item.shell }}"
+    home: "{{ item.home }}"
+    state: present
+  with_items:
+   #    - { name: ld66011, uid: 20716, group: users, comment: "UAdmin", shell: "/bin/bash", home: "/home/ld66011" }
+       - { name: lda5535, uid: 22398, group: users, comment: "GOvault reconcile account", shell: "/bin/bash", home: "/home/lda5535" }
+       - { name: ld660hx, uid: 21940, group: users, comment: "Qualys vulnerability scanning", shell: "/bin/bash", home: "/home/ld660hx" }
+       - { name: lda8898, uid: 24994, group: users, comment: "Ansible Application", shell: "/bin/bash", home: "/home/lda8898" }
+  tags: admin_accounts
+- file: path=/home/ld66011/.ssh state=directory owner=ld66011 group=users mode=0700
+- name: Copy ld66011 authorized key file
+  copy: 
+    src: files/ld66011_authorized_keys
+    dest: /home/ld66011/.ssh/authorized_keys
+    mode: 0600
+    owner: ld66011
+    group: users
+- command: passwd -l ld66011
+- name: Grant sudoers access to ld66011
+  copy:
+    src: files/ld66011_sudo
+    dest: /etc/sudoers.d/admin_ld66011
+    mode: 0440
+    owner: root
+    group: root
+
+- name: Update lda5535 user's password-hash
+  command: usermod -p "$6$hETRKsoC$aUdDWrDUlTGH.i14kGfYnbLuJr98DRS/SsbbD8Il37RRMhOPrGvq273ATZE7KkdEnQx12tjXB.PT.wRgpQox9/" lda5535
+  when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com' or vcenter_name == 'akrosvc1.na.goodyear.com'  or vcenter_name == 'akroevc1.na.goodyear.com' or vcenter_name == 'akrojvc1.na.goodyear.com'
+  tags: admin_accounts
+- command: usermod -p "$6$.oGCw6sk$iRyk7RmkB6FvAjA.osVZIqCiGp9wSM6QqLBOE.bIgtHERC64gwQ8WPHAFzyIr1DfAL7T2CyGMMO.eGc4JwTID1" lda5535
+  when: vcenter_name == 'eclvc1.ec.goodyear.com' or vcenter_name == 'eclvms109.ec.goodyear.com' or vcenter_name == 'eclosvc1.ec.goodyear.com'
+  tags: admin_accounts
+- command: usermod -p "$6$KTjuzfTo$9mKGHJmHEfdxGuwQ2yH.qOHM8w2wxJcCW7TA2B3hYH3MYBRpcNujAh/jpB8GBxsLGZ8nTZm66ttlngvn/z3QB1" lda5535
+  when: vcenter_name == 'sgcvc1.ap.goodyear.com' or vcenter_name == 'sgcgpvc1.ap.goodyear.com' or vcenter_name == 'cnpnvc01.ap.goodyear.com'
+  tags: admin_accounts
+- command: usermod -p "$6$OFMfIHSa$pihBV8rr3OVEkyTvKyGUHCp9k.mljPe4cbcBOcbHw2DDRjpvSmRZwnwNgFLul.jIc5t7qiZu5ev3af.zihTO7/" lda5535
+  when: vcenter_name == 'bravcenter02.la.ad.goodyear.com' or vcenter_name == 'bravcenter01.la.ad.goodyear.com'
+  tags: admin_accounts
+#- command: usermod -p "$1$Xz1gg/ng$9/GkIOcvwJfAwjHaia.ZO1" ld660hx
+#  tags: admin_accounts
+- name: GoVault user lda5535 sudo rights
+  copy:
+   src: files/GOvault
+   dest: /etc/sudoers.d/GOvault
+   mode: 0440
+   owner: root
+   group: root
+  tags: admin_accounts
+- name: Ansible user lda8898 authorized keys
+  copy:
+   src: files/lda8898_authorized_keys
+   dest: /home/lda8898/.ssh/
+   mode: 0600
+   owner: lda8898
+   group: users
+  tags: admin_accounts
+

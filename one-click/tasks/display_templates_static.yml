@@ -7,7 +7,8 @@
   debug:
     msg: "{{ file_content.stdout_lines }}"
   when: vcenter_name == 'akrosvc1.na.goodyear.com'
-- command: cat /etc/ansible/roles/one-click/tasks/sgcvc1.ap.goodyear.com_templates.txt
+  #- command: cat /etc/ansible/roles/one-click/tasks/sgcvc1.ap.goodyear.com_templates.txt
+- command: cat /raj_git_test/GY_Ansible_Roles/GY_Ansible_Roles_Test/one-click/tasks/sgcvc1.ap.goodyear.com_templates.txt
   register: file_content
   when: vcenter_name == 'sgcvc1.ap.goodyear.com'
 - name: Debug output line by line

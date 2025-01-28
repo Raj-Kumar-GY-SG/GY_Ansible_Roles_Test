@@ -1,0 +1,48 @@
+---
+- name: Post processing RHEL-9 server
+  hosts: all
+  become: yes
+  gather_facts: yes
+  vars_prompt:
+   - name: vcenter_name
+     prompt: |
+       Choose the vcenter-name where you need to deploy the VM, available options are
+       - sgcvc1.ap.goodyear.com
+       - sgcgpvc1.ap.goodyear.com
+       - cnpnvc01.ap.goodyear.com
+       - akrvcenterna1.na.ad.goodyear.com
+       - akroevc1.na.goodyear.com
+       - akrosvc1.na.goodyear.com
+       - akrojvc1.na.goodyear.com
+       - bravcenter01.la.ad.goodyear.com
+       - bravcenter02.la.ad.goodyear.com
+       - eclvc1.ec.goodyear.com
+       - eclvms109.ec.goodyear.com
+       - eclosvc1.ec.goodyear.com
+     private: false
+   - name: tz_name
+     prompt: |
+       Enter the server timezone (Example: Asia/Singapore, Europe/Amsterdam, America/New_York, America/Toronto)
+     private: no
+   - name: vm_location
+     prompt: |
+       Where is this server located?, Please enter the DC-name or location (Example: SNG3, Bluffton-DC, B52, Verizon)
+     private: no
+   - name: vm_function
+     prompt: |
+       Please enter the Host-Function (Example: AP CUPS Server, EMEA zabbix-proxy, Akron timeserver)
+     private: no
+
+#- name: RHEL9 hardening
+#  hosts: all
+#  become: yes
+  roles:
+   - rhel9-hardening
+  post_tasks:
+   - shell: find /var/log -type f -exec cp /dev/null {} \;
+   - shell:
+       cmd: rm -f /etc/ssh/ssh_host_*
+   - service: 
+       name: sshd
+       state: restarted
+

@@ -53,6 +53,35 @@
          dns_servers: "{{ dn.user_input }}"
      annotation: "{{ system_purpose }}"
   delegate_to: localhost
+  #  when: vcenter_name == 'eclosvc1.ec.goodyear.com' or vcenter_name == 'akrvcenterna1.na.ad.goodyear.com' or vcenter_name == 'akrosvc1.na.goodyear.com'  or vcenter_name == 'akroevc1.na.goodyear.com' or vcenter_name == 'akrojvc1.na.goodyear.com' or vcenter_name == 'eclvc1.ec.goodyear.com' or vcenter_name == 'eclvms109.ec.goodyear.com' or vcenter_name == 'eclosvc1.ec.goodyear.com'
+
+  #- name: Deploy Virtual server
+  #  vmware_guest:
+  #  hostname: "{{ vcenter_name }}"
+  #   username: "{{ user_name }}"
+  #   password: "{{ pass_word }}"
+  #   validate_certs: no
+  #   datacenter: "{{ user_input.user_input }}"
+  #   cluster: "{{ user_input_1.user_input }}"
+     #    datastore: "{{ ds_select.user_input }}"
+     #name: "{{ vm_name }}"
+     #  hardware:
+     #  memory_mb: "{{ mem.user_input }}"
+     #     state: poweredon
+     #folder: "{{ user_input.user_input }}/vm"
+     #  content_library: ECL_CL
+     #template: "{{ temp.user_input }}"
+     #    networks:
+     #   - name: "{{ vlid.user_input }}"
+     #     ip: "{{ ip_address.user_input }}"
+     #     netmask: "{{ nm.user_input }}"
+     #     gateway: "{{ gw.user_input }}"
+     # wait_for_ip_address: true
+     #     customization:
+     #    dns_servers: "{{ dn.user_input }}"
+     # annotation: "{{ system_purpose }}"
+     # delegate_to: localhost
+     #when: vcenter_name == 'sgcvc1.ap.goodyear.com' or vcenter_name == 'sgcgpvc1.ap.goodyear.com' or vcenter_name == 'cnpnvc01.ap.goodyear.com'
 
 - name: Add extra disk
   pause:
@@ -70,7 +99,6 @@
      password: "{{ pass_word }}"
      validate_certs: no
      datacenter: "{{ user_input.user_input }}"
-     cluster: "{{ user_input_1.user_input }}"
      name: "{{ vm_name }}"
      disk:
        - size_gb: "{{ ex_disk.user_input }}"

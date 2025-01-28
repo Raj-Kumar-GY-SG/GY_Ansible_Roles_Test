@@ -1,0 +1,25 @@
+---
+- name: Install required PERL packages for RHEL-9
+  rhsm_repository:
+    name: codeready-builder-for-rhel-9-x86_64-rpms
+- dnf:
+    name: "{{ item }}"
+    state: present
+    disable_gpg_check: yes
+  with_items:
+   - perl-Getopt-Long
+   - perl-Sys-Syslog
+   - perl-IPC-SysV
+   - perl-Net-Ping
+   - perl-ExtUtils-Install
+   - perl-Switch
+   - perl-Date-Manip
+   - perl-Filter
+   - perl-LWP-Protocol-https
+   - perl-Sys-CPU
+   - perl-Sys-MemInfo
+   - perl-Test-Harness
+   - perl-Thread-Queue
+   - perl-Time-HiRes
+   - perl-Sys-Hostname
+

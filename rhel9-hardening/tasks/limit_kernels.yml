@@ -1,0 +1,6 @@
+---
+- name: Limit the number of old kernels to be kept (2)
+  copy: src=/etc/dnf/dnf.conf dest=/etc/dnf/dnf.conf_{{ ansible_date_time.date }} remote_src=yes
+- copy: src=/etc/yum.conf dest=/etc/yum.conf_{{ ansible_date_time.date }} remote_src=yes
+- lineinfile: path=/etc/dnf/dnf.conf regexp='installonly' line=installonly_limit=2
+- lineinfile: path=/etc/yum.conf regexp='installonly' line=installonly_limit=2

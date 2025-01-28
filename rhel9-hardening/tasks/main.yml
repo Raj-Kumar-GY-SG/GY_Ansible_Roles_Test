@@ -1,0 +1,36 @@
+---
+# tasks file for rhel9-hardening
+- import_tasks: satellite_registration.yml
+- import_tasks: disable_ipv6.yml
+- import_tasks: ctrl_alt_del.yml
+- import_tasks: disable_firewall.yml
+- import_tasks: selinux_mode.yml
+- import_tasks: reboot.yml
+- import_tasks: limit_kernels.yml
+- import_tasks: log_rotation_compression_and_enable_sysstat.yml
+- import_tasks: banner.yml
+- import_tasks: additional_tools.yml
+- import_tasks: perl_packages.yml
+- import_tasks: gy_admin_tools_usr_gdyr.yml
+- import_tasks: users_ld66011_lda5535_ld660hx_lda8898_creation.yml
+- import_tasks: password_policy.yml
+- import_tasks: crowdstrike_installation.yml
+- import_tasks: flexera_installation.yml
+- import_tasks: postfix.yml
+- import_tasks: security_hardening.yml
+  tags: sh
+- import_tasks: set_timezone.yml
+  tags: tz1
+- import_tasks: chrony.yml
+  tags: chrony
+#- import_tasks: append_ld66011_4096_key.yml
+- import_tasks: update_system_info.yml
+  tags: sysinfo
+- import_tasks: gsgv_accounts.yml
+  tags: ad_ac
+- import_tasks: remove_open_vm_tools.yml
+  tags: vm_tools
+- import_tasks: os_patching.yml
+  tags: patch
+- import_tasks: zabbix_and_rapid7.yml
+  tags: zr7

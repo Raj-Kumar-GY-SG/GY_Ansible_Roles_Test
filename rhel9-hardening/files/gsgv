@@ -1,0 +1,12 @@
+User_Alias UA_GSGV001 = gsgv001a, gsgv001b
+User_Alias UA_GSGV002 = gsgv002a, gsgv002b
+User_Alias UA_GSGV003 = gsgv003a, gsgv003b
+
+UA_GSGV002   ALL   = (root) NOPASSWD: ALL
+UA_GSGV003   ALL   = (root) NOPASSWD: ALL
+
+#Cmnd_Alias      EX_CMDS  = /usr/bin/systemctl start networker.service, \
+#                                  /usr/bin/systemctl stop networker.service, \
+#                                  /opt/ltt/hpe_ltt
+
+#UA_GSGV001      ALL             = (root) NOPASSWD: EX_CMDS

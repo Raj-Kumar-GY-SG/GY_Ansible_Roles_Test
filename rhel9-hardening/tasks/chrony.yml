@@ -1,0 +1,51 @@
+---
+- name: Disable vmware-timesync before installing chronyc
+  shell:
+    cmd: vmware-toolbox-cmd timesync disable
+  ignore_errors: true
+- name: Install chrony
+  package: name=chrony state=latest
+  ignore_errors: yes
+- copy: src=files/chrony.conf dest=/etc/ owner=root group=root mode=0644
+- name: Restart chronyd service
+  service: name=chronyd state=started enabled=yes
+- name: set the NTP server for Americas
+  lineinfile: path=/etc/chrony.conf insertbefore='^#iburst'   line='{{ item }}' state=present
+  with_items:
+     - "server akrts001.akr.goodyear.com iburst maxpoll 8"
+     - "server time.goodyear.com iburst maxpoll 8"
+  when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com' or vcenter_name == 'bravcenter02.la.ad.goodyear.com' or vcenter_name == 'bravcenter01.la.ad.goodyear.com' or vcenter_name == 'akrosvc1.na.goodyear.com'  or vcenter_name == 'akroevc1.na.goodyear.com' or vcenter_name == 'akrojvc1.na.goodyear.com'
+#- lineinfile: path=/etc/chrony.conf line='server time.goodyear.com iburst maxpoll 8' insertafter=^server firstmatch=true
+#  when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com' or vcenter_name == 'bravcenter02.la.ad.goodyear.com' or vcenter_name == 'bravcenter01.la.ad.goodyear.com' or vcenter_name == 'akrosvc1.na.goodyear.com'  or vcenter_name == 'akroevc1.na.goodyear.com' or vcenter_name == 'akrojvc1.na.goodyear.com'
+- name: set the NTP server for EMEA
+  lineinfile: path=/etc/chrony.conf insertbefore='^#iburst'   line='{{ item }}' state=present
+  when: vcenter_name == 'eclvc1.ec.goodyear.com' or vcenter_name == 'eclvms109.ec.goodyear.com' or vcenter_name == 'eclosvc1.ec.goodyear.com'
+  with_items:
+     - "server eclstime01.ec.goodyear.com iburst maxpoll 8"
+     - "server eclstime02.ec.goodyear.com iburst maxpoll 8"
+     - " "
+#- lineinfile: path=/etc/chrony.conf line='server eclstime02.ec.goodyear.com iburst maxpoll 8' insertafter=^server firstmatch=true
+#  when: vcenter_name == 'eclvc1.ec.goodyear.com' or vcenter_name == 'eclvms109.ec.goodyear.com' or vcenter_name == 'eclosvc1.ec.goodyear.com'
+- name: set the NTP server for AP
+  lineinfile: path=/etc/chrony.conf insertbefore='^#iburst'   line='{{ item }}' state=present
+  with_items:
+     - "server time.ap.goodyear.com iburst maxpoll 8"
+     - "server time2.ap.goodyear.com iburst maxpoll 8"
+     - " "
+  when: vcenter_name == 'sgcvc1.ap.goodyear.com' or vcenter_name == 'sgcgpvc1.ap.goodyear.com' or vcenter_name == 'cnpnvc01.ap.goodyear.com'
+#- lineinfile: path=/etc/chrony.conf regexp='^server'   line='server time2.ap.goodyear.com iburst maxpoll 8'
+#  when: vcenter_name == 'sgcvc1.ap.goodyear.com' or vcenter_name == 'sgcgpvc1.ap.goodyear.com' or vcenter_name == 'cnpnvc01.ap.goodyear.com'
+###- pause:
+###   prompt: "Enter the NTP server name, please enter fqdn example: time.ap.goodyear.com"  
+###   echo: yes
+###  register: pause_result
+###- set_fact: server_name="{{ pause_result.user_input }}"
+###- name: update server name entry in chrony configuration file
+###  lineinfile: path=/etc/chrony.conf regexp='^server'   line='server {{ server_name }} iburst maxpoll 8'
+#############Below not defined for RHEL-9 in SOP##############
+#- lineinfile:
+#    path: /etc/sysconfig/chronyd
+#    regexp: '^OPTIONS='
+#    line: OPTIONS="-4"
+- name: Restart chrony service
+  service: name=chronyd state=restarted enabled=yes

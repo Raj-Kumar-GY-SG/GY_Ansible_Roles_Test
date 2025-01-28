@@ -1,0 +1,107 @@
+---
+- name: Install zabbix agent
+  yum: name=pcre2 state=latest
+  when: ansible_os_family == "RedHat"
+  tags: zabbix-agent
+- zypper: name=libpcre2-8-0 state=latest
+  when: ansible_os_family == "Suse"
+  tags: zabbix-agent
+- name: Download zabbix script from akrsrv481 (depot-zabbix)
+  get_url: url=https://akrsrv481.akr.goodyear.com/pub/depot/Zabbix/zabbixinst_cli.sh dest=/var/tmp/  validate_certs=false mode=0755
+  tags: zabbix-agent
+- name: Execute zabbix Installation script for North-America
+  raw: sh /var/tmp/zabbixinst_cli.sh NA
+  become: true
+  when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com' or vcenter_name == 'bravcenter02.la.ad.goodyear.com' or vcenter_name == 'bravcenter01.la.ad.goodyear.com' or vcenter_name == 'akrosvc1.na.goodyear.com'  or vcenter_name == 'akroevc1.na.goodyear.com' or vcenter_name == 'akrojvc1.na.goodyear.com'
+  tags: zabbix-agent
+- name: Execute zabbix Installation script for AP and EMEA
+  raw: sh /var/tmp/zabbixinst_cli.sh EMEA
+  become: true
+  when: vcenter_name == 'sgcvc1.ap.goodyear.com' or vcenter_name == 'sgcgpvc1.ap.goodyear.com' or vcenter_name == 'cnpnvc01.ap.goodyear.com' or vcenter_name == 'eclvc1.ec.goodyear.com' or vcenter_name == 'eclvms109.ec.goodyear.com' or vcenter_name == 'eclosvc1.ec.goodyear.com'
+  tags: zabbix-agent
+- name: Start and Enable auto-start zabbix service
+  service: name=zabbix-agent2 state=started enabled=yes
+  tags: zabbix-agent
+- file: path=/var/tmp/zabbixinst_cli.sh state=absent
+  tags: zabbix-agent
+- shell: 
+   cmd: rm -f /var/tmp/rpm-tmp*
+  tags: zabbix-agent
+
+### Install Rapid 7 Agent####
+- name: Get vg Name for Rapid7 Agent
+  shell:
+   cmd: df -h /opt|awk -F- '{print $1}'|egrep -iv "Filesystem" | cut -d '/' -f4
+  register: vg_name
+  tags: rapid7
+- name: create lv for rapid7
+  lvol:
+    vg: "{{ vg_name.stdout }}"
+    lv: lvrapid7
+    size: '1G'
+    state: present
+  ignore_errors: true
+  tags: rapid7
+- filesystem:
+    fstype: xfs
+    dev: /dev/{{ vg_name.stdout }}/lvrapid7
+  ignore_errors: true
+  tags: rapid7
+- file: path=/opt/rapid7 state=directory
+  tags: rapid7
+- mount:
+    path: /opt/rapid7
+    src: /dev/{{ vg_name.stdout }}/lvrapid7
+    fstype: xfs
+    opts: defaults,nodev
+    state: mounted
+  ignore_errors: true
+  tags: rapid7
+########Updated Procedure on 8-Jan-2025##########
+- name: Copy binary to a directory with exe mount options/permissions... (/tmp, /var/tmp may have noexec due to security hardening)
+  get_url: url=https://akrsrv481.akr.goodyear.com/pub/depot/Rapid7/rapid7-insight-agent-4.0.12.14-1.x86_64.rpm dest=/home/ld66011/ validate_certs=false
+  tags: rapid7
+
+- name: Execute rpm installation from shell
+  shell: cmd=sudo rpm -ivh /home/ld66011/rapid7-insight-agent-4.0.12.14-1.x86_64.rpm
+  tags: rapid7
+  ignore_errors: true
+
+- name: Get rapid7 insight agent version
+  shell: /opt/rapid7/ir_agent/components/insight_agent/insight_agent --version|grep -i Sem |awk '{print $3}'
+  register: version
+  tags: rapid7
+
+- name: Display agent-version
+  debug: msg="{{ version }}"
+  tags: rapid7
+
+- name: Stop agent service before running the configure script
+  service: name=ir_agent state=stopped enabled=yes
+  tags: rapid7
+
+- name: Navigate to the installation folder and run "configure.sh" using the following command
+  shell: ./configure_agent.sh --start --token us:7075951e-8430-4e3b-9d23-2ed743d6cd51 -v
+  args:
+    chdir: /opt/rapid7/ir_agent/components/insight_agent/{{ version.stdout }}/
+  tags: rapid7
+- name: Restart ir_agent service
+  service: name=ir_agent state=restarted enabled=yes
+  tags: rapid7
+- name: Delete installer file
+  file: path=/home/ld66011/rapid7-insight-agent-4.0.12.14-1.x86_64.rpm  state=absent
+  tags: rapid7
+
+
+  #############  
+  #- name: Install/curl script
+  # get_url: url=https://akrsrv481.akr.goodyear.com/pulp/content/Goodyear/Library/custom/Rapid_7_agent/Rapid_7_agent/Intel_agent_installer-x86_64.sh dest=/var/tmp/ validate_certs=false
+  #  tags: rapid7
+  #- shell: 
+  # cmd: sh /var/tmp/Intel_agent_installer-x86_64.sh install_start --token us:7075951e-8430-4e3b-9d23-2ed743d6cd51
+  # tags: rapid7
+  #- name: Restart ir_agent service
+  # service: name=ir_agent state=restarted enabled=yes
+  #  tags: rapid7
+  #- file: path=/var/tmp/Intel_agent_installer-x86_64.sh state=absent
+  # tags: rapid7

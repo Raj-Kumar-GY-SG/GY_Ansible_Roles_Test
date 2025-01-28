@@ -1,0 +1,14 @@
+---
+- name: Disable Firewall
+  service:
+    name: firewalld
+    state: stopped
+    enabled: false
+  ignore_errors: yes
+- name: Display firewalld status
+  command: systemctl status firewalld
+  register: st
+  ignore_errors: true
+- debug:
+    msg: "{{ st.stdout }}"
+  ignore_errors: true 

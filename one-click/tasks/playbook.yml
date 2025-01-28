@@ -51,16 +51,21 @@
     - set_fact: system_purpose="{{ system_purpose_1 }}"
     - debug:
         var: system_purpose
-    - shell: 
-        cmd: echo {{ vm_name }} >> /etc/ansible/hosts
+    - lineinfile:
+        path: /etc/ansible/hosts
+        line: "{{ vm_name }}"
+    #- shell: 
+    #    cmd: echo {{ vm_name }} >> /etc/ansible/hosts
     - include_role:
         name: one-click
+      tags: 1-cl
     - include_role:
 #        name: post-processing-rhel
 #      name: backup_Protection_rhel-8-post-processing
         name: rhel9-hardening
         apply:
           delegate_to: "{{ vm_name }}"
+      tags: rh9_hrdg
 #      vars:
 #        hosts: "{{ vm_name }}"
   

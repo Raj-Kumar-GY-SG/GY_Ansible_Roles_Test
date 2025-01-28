@@ -1,0 +1,53 @@
+---
+- name: Get vg Name
+  shell: 
+   cmd: df -h /opt|awk -F- '{print $1}'|egrep -iv "Filesystem" | cut -d '/' -f4
+  register: vg_name 
+- name: create lv for flexera
+  lvol:
+    vg: "{{ vg_name.stdout }}"
+    lv: lvmanagesoft
+    size: '300M'
+    state: present
+  ignore_errors: true
+- filesystem:
+    fstype: xfs
+    dev: /dev/{{ vg_name.stdout }}/lvmanagesoft
+  ignore_errors: true
+#- copy: src=/etc/fstab dest=/tmp/fstab_{{ ansible_date_time.date }} remote_src=yes
+- file: path=/opt/managesoft state=directory
+- mount:
+    path: /opt/managesoft
+    src: /dev/{{ vg_name.stdout }}/lvmanagesoft
+    fstype: xfs 
+    state: mounted
+  ignore_errors: true
+- user: name=ldflexn uid=24249 password="*" comment="Global Flexera Software Asset Agent" home=/home/ldflexn group=users state=present
+- file: path=/home/ldflexn/.ssh state=directory group=users owner=ldflexn mode=0700
+- copy: src=files/ldflexn_authorized_keys dest=/home/ldflexn/.ssh/authorized_keys mode=0600 owner=ldflexn group=users
+- copy: src=files/flexera dest=/etc/sudoers.d/ mode=0440
+- dnf: name=managesoft state=absent
+  tags: flex
+- copy: src=files/mgssetup_rpm.sh dest=/tmp/ mode=755  
+  tags: flex
+- shell: bash /tmp/mgssetup_rpm.sh
+#command="bash /tmp/mgssetup_rpm.sh"
+  tags: flex
+- pause: seconds=5
+  tags: flex
+- dnf:
+   name: 'http://eclvms01.ec.goodyear.com/global/flexera-Linux-x86_64/managesoft-21.0.0-1.x86_64.rpm'
+   state: present
+   disable_gpg_check: true
+  tags: flex
+#- copy: src=files/managesoft-21.0.0-1.x86_64.rpm dest=/tmp
+#  tags: flex
+#- yum: name="/tmp/managesoft-21.0.0-1.x86_64.rpm" disable_gpg_check=true state=present
+#  tags: flex
+- service: name="mgsusageag" state=stopped enabled=no
+  tags: flex
+#- file: path="/tmp/managesoft-21.0.0-1.x86_64.rpm" state=absent
+#  tags: flex
+- file: path="/tmp/mgssetup_rpm.sh" state=absent
+  tags: flex
+- service: name="ndtask" state=started

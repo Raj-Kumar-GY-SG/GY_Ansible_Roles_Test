@@ -1,0 +1,46 @@
+---
+- name: Disable IPv6
+  shell:
+    cmd: nmcli connection | egrep -v 'NAME|lo'| awk '{print $1}'
+  register: active_interfaces
+
+- command: cat /sys/class/dmi/id/sys_vendor
+  register: archi
+
+- shell:
+    cmd: nmcli connection modify {{ item }} ipv6.method "disabled"
+  loop: "{{ active_interfaces.stdout_lines }}"
+  
+- copy:
+    src: /etc/vmware-tools/tools.conf.example 
+    dest: /etc/vmware-tools/tools.conf
+    remote_src: yes
+  when: 'archi.stdout == "VMware, Inc."'
+  ignore_errors: true
+- lineinfile:
+    path: /etc/vmware-tools/tools.conf
+    search_string: "#max-ipv6-routes=100"
+    line: max-ipv6-routes=0
+  when: 'archi.stdout == "VMware, Inc."'
+  ignore_errors: true
+
+- name: display output of ipv6 status max-ipv6-routes will be 0 and ipv6method disabled
+  shell:
+    cmd: grep -i max-ipv6-routes /etc/vmware-tools/tools.conf
+  register: routed
+  when: 'archi.stdout == "VMware, Inc."'
+  ignore_errors: true
+
+- debug: 
+    msg: "{{ routed.stdout_lines }}"
+  when: 'archi.stdout == "VMware, Inc."'
+  ignore_errors: true
+
+- shell:
+    cmd: nmcli connection show {{ item }} |grep -i ipv6.method
+  loop: "{{ active_interfaces.stdout_lines }}"
+  register: method
+  ignore_errors: true
+- debug:
+    msg: "{{ method.stdout }}"
+  ignore_errors: true

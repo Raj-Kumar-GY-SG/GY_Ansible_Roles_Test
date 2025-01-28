@@ -1,0 +1,4 @@
+---
+- name: perform patching
+  dnf: name="*" state=latest
+- reboot:

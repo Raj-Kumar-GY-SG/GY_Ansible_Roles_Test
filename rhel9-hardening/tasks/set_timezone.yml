@@ -1,0 +1,13 @@
+---
+- name: Set timezone
+  pause:
+    prompt: "Enter the server time-zone example Asia/Singapore or America/Chicago or Europe/Luxembourg\n"
+    echo: yes
+  register: pause_result
+  when: tz_name is not defined
+- set_fact: time_zone="{{ pause_result.user_input }}"
+  when: tz_name is not defined
+- set_fact: time_zone="{{ tz_name }}"
+  when: tz_name is defined
+- timezone: name={{ time_zone }}  
+

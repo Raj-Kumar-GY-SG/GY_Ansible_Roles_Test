@@ -1,0 +1,42 @@
+---
+- name: Install Additional tools for RHEL-9 (at attr bash-completion bc bind-utils bzip2 cyrus-sasl cyrus-sasl-plain dhcp-client dhcp-common dos2unix gcc iftop iotop iperf3 ksh lsof man-pages ncurses nmap-ncat nmon postfix rsync sos strace tcpdump time tmux vim-common vim-enhanced vim-filesystem wget words xfsdump)
+  dnf:
+   name: "{{ item }}"
+   state: present
+   disable_gpg_check: yes
+  with_items:
+   - at
+   - attr
+   - bash-completion
+   - bc
+   - bind-utils
+   - bzip2
+   - cyrus-sasl
+   - cyrus-sasl-plain
+   - dhcp-client
+   - dhcp-common
+   - dos2unix
+   - gcc
+   - iftop
+   - iotop
+   - iperf3
+   - ksh
+   - lsof
+   - man-pages
+   - ncurses
+   - nmap-ncat
+   - nmon
+   - postfix
+   - rsync
+   - sos
+   - strace
+   - tcpdump
+   - time
+   - tmux
+   - vim-common
+   - vim-enhanced
+   - vim-filesystem
+   - wget
+   - words
+   - xfsdump
+   

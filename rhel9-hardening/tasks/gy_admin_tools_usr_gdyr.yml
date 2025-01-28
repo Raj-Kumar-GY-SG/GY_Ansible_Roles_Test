@@ -1,0 +1,5 @@
+---
+- name: Install Goodyear administration tools / GY Admin files (/usr/gdyr) directory
+  shell:
+    cmd: curl --insecure https://akrsrv481.akr.goodyear.com/pub/depot/usr_gdyr.tgz | tar xzf - -C /
+  ignore_errors: yes

@@ -1,0 +1,41 @@
+---
+- name: Backup copy of system info file
+  copy:
+    src: /usr/gdyr/etc/system.info
+    dest: /usr/gdyr/etc/system.info_{{ ansible_date_time.date }}
+    remote_src: yes
+  ignore_errors: true
+- command: cat /sys/class/dmi/id/sys_vendor
+  register: archi
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^       SYSTEM_NAME="' line='       SYSTEM_NAME="{{ ansible_hostname }}"' state=present
+  ignore_errors: true
+- pause:
+   prompt: "Where is this server located?, Please enter the DC-name or location"
+  register: pause_result
+  when: vm_location is not defined
+#- pause: 
+#   prompt: "Please enter the Host-Function"
+#  register: pause_result_1
+#- set_fact: vm_location="{{ pause_result.user_input }}"
+#- set_fact: vm_function="{{ pause_result_1.user_input }}"
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^   SYSTEM_LOCATION="' line='       SYSTEM_LOCATION="{{ pause_result.user_input }}"'  state=present
+  when: vm_location is not defined
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^   SYSTEM_LOCATION="' line='       SYSTEM_LOCATION="{{ vm_location }}"'  state=present
+  when: vm_location is defined
+#  ignore_errors: true
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^   SYSTEM_FUNCTION="' line='       SYSTEM_FUNCTION="{{ vm_function }}"' state=present
+  when: vm_function is defined
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^   SYSTEM_FUNCTION="' line='       SYSTEM_FUNCTION="{{ system_purpose_1 }}"' state=present
+  when: system_purpose_1 is defined
+#  when: 'archi.stdout == "VMware, Inc."'
+#- lineinfile: path=/usr/gdyr/etc/system.info regexp='^   SYSTEM_FUNCTION="' line='       SYSTEM_FUNCTION="Backup Media server/Storage-node at {{ vm_location }}"' state=present
+#  when: 'archi.stdout != "VMware, Inc."'
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^      SYSTEM_USAGE="'  line='       SYSTEM_USAGE="PRD"'  state=present
+- shell: dmidecode -s system-serial-number
+  register: sr_no
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^  SYSTEM_SERIAL_NO="'  line='       SYSTEM_SERIAL_NO="{{ sr_no.stdout }}"' state=present
+  when: 'archi.stdout != "VMware, Inc."'
+- shell: dmidecode -s system-product-name
+  register: pd_name
+- lineinfile: path=/usr/gdyr/etc/system.info regexp='^      SYSTEM_MODEL="'   line='       SYSTEM_MODEL="{{ pd_name.stdout }}"' state=present
+  when: 'archi.stdout != "VMware, Inc."'

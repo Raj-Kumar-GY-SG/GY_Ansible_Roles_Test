@@ -1,0 +1,168 @@
+- name: Security hardening (2024/06/26)
+  debug:
+    msg: "RHEL-9 security hardening"
+- name: Enable BIOS Password
+  debug:
+    msg: "UEFI is used which do not allow administrative password to be set"
+- name: Kernel Paramaters
+  debug:
+    msg: >-
+        {{ Disable IPv4 ICMP redirect
+           Prevent network flooding
+           Force disabling of IPv4 forwarding
+           Randomize VA space
+           Prevent SUID binaries to generate dumps
+        }}
+- copy:
+    src: files/50-GY_hardening.conf
+    dest: /etc/sysctl.d/50-GY_hardening.conf
+    mode: 0644
+    owner: root
+    group: root
+- name: Disable nonsecure kernel modules
+  debug:
+    msg: |
+        - TIPC
+        - squashfs
+        - udf
+        - USB-storage
+- copy: src=files/GY_hardening.conf dest=/etc/modprobe.d/GY_hardening.conf owner=root group=root mode=0644
+- name: Partition mount options
+  debug:
+    msg: |
+     To check for partition mounting weakness, we consider the following criteria:
+       All partitions other than '/', '/dev', '/sys', and '/proc' should have the following options set:        nodev
+       /home should have the following options set:                                                             nosuid
+       /tmp and /var should have the following options set:                                                     nosuid,noexec
+       /etc should have the following options set:                                                              nosuid,noexec
+- mount:
+   backup: true
+   path: /opt/CrowdStrike
+   opts: nodev
+- mount:
+   path: /opt/managesoft
+   opts: nodev
+- mount:
+   path: /opt/rapid7
+   opts: nodev
+  ignore_errors: true
+- mount:
+   path: /boot
+   opts: nodev
+- mount:
+   path: /home
+   opts: nodev,nosuid
+- mount:
+   path: /tmp
+   opts: nodev,nosuid,noexec
+- mount:
+   path: /var
+   opts: nodev,nosuid,noexec
+- mount:
+   path: /etc
+   opts: nodev,nosuid,noexec
+  ignore_errors: true
+- mount:
+   path: /opt
+   opts: nodev
+
+- name: SSHD Hardnening
+  copy: src=files/99-GY-hardening.conf dest=/etc/ssh/sshd_config.d/99-GY-hardening.conf mode=0644 owner=root group=root
+
+- name: World writable directories
+  file:
+    path: /usr/gdyr/lib state=directory mode=0755
+- file: path=/usr/gdyr/var state=directory mode=0755
+
+- name: Enforce root login only through allowed consoles
+  lineinfile:
+    path: /etc/pam.d/login
+    backup: yes
+    insertafter: '#%PAM-1.0'
+    firstmatch: yes
+    line: "auth [user_unknown=ignore success=ok ignore=ignore default=bad] pam_securetty.so"
+    state: present
+
+- lineinfile: 
+    path: /etc/pam.d/remote
+    backup: yes
+    insertafter: '#%PAM-1.0'
+    firstmatch: yes
+    line: "auth       required     pam_securetty.so"
+    state: present
+
+- blockinfile:
+    path: /etc/securetty
+    backup: yes
+    block: |
+        console
+        vc/1
+        vc/2
+        vc/3
+        vc/4
+        vc/5
+        vc/6
+        vc/7
+        vc/8
+        vc/9
+        vc/10
+        vc/11
+        tty1
+        tty2
+        tty3
+        tty4
+        tty5
+        tty6
+        tty7
+        tty8
+        tty9
+        tty10
+        tty11
+    present: yes
+
+- name: Password policy enforcement
+  shell:
+    cmd: authselect select custom/goodyear-policy with-faillock without-nullok --backup=sssd.original force
+- command: authselect current
+  register: ac
+- debug:
+    msg: "{{ ac.stdout_lines }}"
+- name: journald
+  debug:
+    msg: |
+           - Enable compress on journald big files
+           - Enable journald to send to syslog
+           - Enable journald to store data to persistent storage
+- lineinfile:
+    path: /etc/systemd/journald.conf
+    firstmatch: yes
+    search_string: '^Storage='
+    insert_before: '^#Seal=yes'
+    line: 'Storage=persistent'
+    state: present
+- lineinfile:
+    path: /etc/systemd/journald.conf
+    firstmatch: yes
+    search_string: 'Compress='
+    insert_before: '^#Seal=yes'
+    line: 'Compress=yes'
+    state: present
+- lineinfile:
+    path: /etc/systemd/journald.conf
+    firstmatch: yes
+    search_string: 'ForwardToSyslog'
+    line: 'ForwardToSyslog=yes'
+    insert_before: '^#ForwardToKMsg=no'
+    state: present
+- lineinfile:
+    path: /etc/systemd/journald.conf
+    search_string: 'Audit='
+    line: 'Audit='
+    state: present
+
+- name: Display ourput of Journald.conf file
+  shell:
+    cmd: grep -Ev "^#" /etc/systemd/journald.conf
+  register: jd
+- debug:
+    msg: "{{ jd.stdout_lines }}"

@@ -1,0 +1,12 @@
+---
+- name: Configure log rotation compression and Enable system statistics
+  copy: src=/etc/logrotate.conf dest=/etc/logrotate.conf_{{ ansible_date_time.date }}
+- replace: path=/etc/logrotate.conf regexp='#compress' replace="compress"
+- package:
+    name: sysstat
+    state: present
+- service:
+    name: sysstat
+    state: started
+    enabled: yes
+

@@ -1,0 +1,47 @@
+---
+#- command: cat /sys/class/dmi/id/sys_vendor
+#  register: archi
+#  tags: gsgv_users
+
+- name: Create gsgv* accounts
+  user: name="{{ item.name }}" uid="{{ item.uid }}" group="{{ item.group }}" comment="{{ item.comment }}" shell="{{ item.shell }}" state=present
+  with_items:
+    - { name: gsgv001a, uid: 25001, group: users, comment: "Application Support", shell: "/bin/bash" }
+    - { name: gsgv001b, uid: 25002, group: users, comment: "Application Support", shell: "/bin/bash" }
+#    - { name: gsgv001c, uid: 25003, group: users, comment: "Application Support", shell: "/bin/bash" }
+#    - { name: gsgv001d, uid: 25004, group: users, comment: "Application Support", shell: "/bin/bash" }
+    - { name: gsgv002a, uid: 25011, group: users, comment: "L2 OS Support", shell: "/bin/bash" }
+    - { name: gsgv002b, uid: 25012, group: users, comment: "L2 OS Support", shell: "/bin/bash" }
+#    - { name: gsgv002c, uid: 25013, group: users, comment: "L2 OS Support", shell: "/bin/bash" }
+#    - { name: gsgv002d, uid: 25014, group: users, comment: "L2 OS Support", shell: "/bin/bash" }
+    - { name: gsgv003a, uid: 25031, group: users, comment: "L3 OS Support", shell: "/bin/bash" }
+    - { name: gsgv003b, uid: 25032, group: users, comment: "L3 OS Support", shell: "/bin/bash" }
+#    - { name: gsgv003c, uid: 25033, group: users, comment: "L3 OS Support", shell: "/bin/bash" }
+#    - { name: gsgv003d, uid: 25034, group: users, comment: "L3 OS Support", shell: "/bin/bash" }
+  tags: gsgv_users
+- file: path=/etc/sudoers.d/gsgv_networker_server state=absent
+  ignore_errors: true
+  tags: gsgv_users
+#- name: Grant sudoers access
+#  copy: src=files/gsgv_ld dest=/etc/sudoers.d/ mode=0440
+#  when: 'archi.stdout == "VMware, Inc."'
+#  tags: gsgv_users
+- name: Grant sudoers access to gsgv-users
+  copy: src=files/gsgv dest=/etc/sudoers.d/ mode=0440
+#  when: 'archi.stdout != "VMware, Inc."'
+  tags: gsgv_users
+#- user: name=gsgv001a group=users groups=bkpadm append=yes
+#  when: 'archi.stdout == "VMware, Inc."'
+#  tags: gsgv_users
+#- user: name=gsgv001b group=users groups=bkpadm append=yes
+#  when: 'archi.stdout == "VMware, Inc."'
+#  tags: gsgv_users
+#- name: Update directories and subdirectories of /nsr/scripts, /nsr/tape, /nsr/report, The directories and sub-directories should have an owner of root:bkpadm and The permissions should be rwxrwx--- (770)
+#  file: path="{{ item }}" state=directory recurse=yes owner=root group=bkpadm mode='0770'
+#  loop:
+#    - /nsr/scripts
+#    - /nsr/tape
+#    - /nsr/report
+#  when: 'archi.stdout == "VMware, Inc."'
+#  tags: gsgv_users
+

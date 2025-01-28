@@ -1,0 +1,43 @@
+---
+- setup:
+   gather_subset: all
+- name: Subscribe {{ vm_name }} to satellite
+#  get_url module:
+#    url: https://eclvms52.ec.goodyear.com/pub/katello-ca-consumer-latest.noarch.rpm
+#    dest: /var/tmp/
+#    validate_certs: false
+#  when: vcenter_name == 'eclvc1.ec.goodyear.com' or vcenter_name == 'eclvms109.ec.goodyear.com' or vcenter_name == 'eclosvc1.ec.goodyear.com'
+  package:
+   name: 'https://eclvms52.ec.goodyear.com/pub/katello-ca-consumer-latest.noarch.rpm'
+   state: present
+   use: auto
+   validate_certs: false
+   disable_gpg_check: yes
+  when: vcenter_name == 'eclvc1.ec.goodyear.com' or vcenter_name == 'eclvms109.ec.goodyear.com' or vcenter_name == 'eclosvc1.ec.goodyear.com'
+- package:
+   name: 'https://sgcsrv01.ap.goodyear.com/pub/katello-ca-consumer-latest.noarch.rpm'
+   state: present
+   use: auto
+   validate_certs: false
+   disable_gpg_check: yes
+  when: vcenter_name == 'sgcvc1.ap.goodyear.com' or vcenter_name == 'sgcgpvc1.ap.goodyear.com' or vcenter_name == 'cnpnvc01.ap.goodyear.com'
+- package:
+   name: 'https://akrsrv481.akr.goodyear.com/pub/katello-ca-consumer-latest.noarch.rpm'
+   state: present
+   use: auto
+   validate_certs: false
+   disable_gpg_check: yes
+  when: vcenter_name == 'akrvcenterna1.na.ad.goodyear.com' or vcenter_name == 'bravcenter02.la.ad.goodyear.com' or vcenter_name == 'bravcenter01.la.ad.goodyear.com' or vcenter_name == 'akrosvc1.na.goodyear.com'  or vcenter_name == 'akroevc1.na.goodyear.com' or vcenter_name == 'akrojvc1.na.goodyear.com'
+- community.general.redhat_subscription:
+    state: present
+    org_id: "Goodyear"
+    activationkey: "RHEL 9 Activation Key"
+- command: subscription-manager attach --auto
+ #  auto_attach: true
+
+
+
+#curl --insecure --output katello-ca-consumer-latest.noarch.rpm https://eclvms52.ec.goodyear.com/pub/katello-ca-consumer-latest.noarch.rpm
+#dnf -y localinstall katello-ca-consumer-latest.noarch.rpm
+#subscription-manager register --org="Goodyear" --activationkey="RHEL 8 Activation Key"
+#subscription-manager attach --auto

@@ -1,0 +1,22 @@
+- name: Configure Postfix default settings
+  package:
+   name: "{{ item }}"
+   state: installed
+  with_items:
+   - postfix
+   - cyrus-sasl
+   - cyrus-sasl-plain
+  tags: pf
+- name: postconf configuration initial, set inet_protocols to ipv4, no relayhost defined, default_transport is error-message
+  service: name=postfix state=stopped
+  tags: pf
+  ignore_errors: true
+- command: postconf -e inet_protocols=ipv4
+  tags: pf
+- command: postconf -e relayhost=
+  tags: pf
+- command: postconf -e default_transport='error:Mail delivery to external world is disabled'
+  tags: pf
+- name: Enable and start postfix service
+  service: name=postfix state=restarted enabled=yes
+  tags: pf

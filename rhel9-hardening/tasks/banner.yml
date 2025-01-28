@@ -1,0 +1,11 @@
+---
+- name: Configure banner
+  copy:
+   src: files/GY-banner
+   dest: /etc/GY-banner
+- copy:
+   src: files/99-GY-banner.conf
+   dest: /etc/ssh/sshd_config.d/99-GY-banner.conf
+- service:
+   name: sshd
+   state: restarted

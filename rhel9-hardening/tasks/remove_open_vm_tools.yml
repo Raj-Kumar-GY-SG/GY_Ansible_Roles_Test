@@ -1,0 +1,9 @@
+---
+- command: cat /sys/class/dmi/id/sys_vendor
+  register: archi
+  tags: ovm
+- name: Remove open-vm-tools from physical servers
+  package: name=open-vm-tools state=absent
+  when: 'archi.stdout != "VMware, Inc."'
+  ignore_errors: true
+  tags: ovm

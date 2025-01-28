@@ -1,0 +1,19 @@
+---
+- name: Prevent system reboot on pressing Ctrl-Alt-Del
+  file: 
+   path: /etc/systemd/system/ctrl-alt-del.target
+   state: absent
+  ignore_errors: true
+- shell: cmd=sudo systemctl mask ctrl-alt-del.target
+- name: display ctrl-alt-del.target file status and ctrl-alt-del.target service status
+  shell:
+   cmd: ls -ltr /etc/systemd/system/ctrl-alt-del.target
+  register: ls
+  ignore_errors: true
+- debug: 
+    msg: "{{ ls.stdout_lines }}"
+- command: systemctl status ctrl-alt-del.target
+  register: ss
+  ignore_errors: true
+- debug: 
+   msg: "{{ ss.stdout_lines }}"

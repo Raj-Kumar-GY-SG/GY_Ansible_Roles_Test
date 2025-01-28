@@ -1,0 +1,44 @@
+---
+- name: Install Crowdstrike agent on RHEL9 servers
+  setup:
+   gather_subset:
+     - '!all'
+     - '!any'
+     - hardware
+     - distribution
+  tags: cs 
+- name: Get vg Name
+  shell:
+    cmd: df -h /opt|awk -F- '{print $1}'|egrep -iv Filesystem | cut -d '/' -f4
+  register: vg_name
+  tags: cs
+- name: create lv for crowdstrike
+  lvol:
+    vg: "{{ vg_name.stdout }}"
+    lv: lvcrowdstrike
+    size: '300M'
+    state: present
+  ignore_errors: true
+  tags: cs
+- filesystem:
+    fstype: xfs
+    dev: /dev/{{ vg_name.stdout }}/lvcrowdstrike
+  ignore_errors: true
+  tags: cs
+- copy: src=/etc/fstab dest=/etc/fstab_{{ ansible_date_time.date }} remote_src=yes
+  tags: cs
+- file: path=/opt/CrowdStrike state=directory
+  tags: cs
+- mount: path=/opt/CrowdStrike src=/dev/{{ vg_name.stdout }}/lvcrowdstrike fstype=xfs state=mounted
+  tags: cs
+- dnf:
+   name: 'http://akrsrv481.akr.goodyear.com/pulp/repos/Goodyear/Library/custom/Crowdstrike/Crowdstrike_local/Packages/f/falcon-sensor-6.57.0-15402.el9.x86_64.rpm'
+   state: present
+   disable_gpg_check: true
+  tags: cs
+- shell: cmd='/opt/CrowdStrike/falconctl -s -f --cid="35ECBE06AC804253BDE4EAD98B64B243-12"'
+  tags: cs
+- command: /opt/CrowdStrike/falconctl -s -f --cid="35ECBE06AC804253BDE4EAD98B64B243-12"
+  tags: cs
+- service: name="falcon-sensor" state=started enabled=yes
+  tags: cs
